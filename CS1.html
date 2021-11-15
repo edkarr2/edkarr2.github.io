@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Edwin Karabidian, John Girard, and Zack Bunn" />
+  <title>CS1 Anheuser-Busch</title>
+  <style type="text/css">
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      word-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">CS1 Anheuser-Busch</h1>
+<h2 class="author">Edwin Karabidian, John Girard, and Zack Bunn</h2>
+<h3 class="date">10/9/2021</h3>
+</div>
+<pre class="{r}"><code># getwd()
+# list.files()
+# install.packages(&quot;dplyr&quot;)
+# install.packages(&quot;class&quot;)
+# install.packages(&quot;caret&quot;)
+# install.packages(&quot;e1071&quot;)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(maps)
+library(class)
+library(class)
+library(caret)
+library(e1071)
+library(knitr)
+library(ggthemes)
+
+#import data
+beers &lt;- read.csv (&quot;C:/Users/00v9329/Desktop/KEEP/_Odin/SMU_2/0Courses/02_Doing Data Science/_Case Study 1/Beers.csv&quot;,  header= TRUE)
+
+breweries &lt;- read.csv(&quot;C:/Users/00v9329/Desktop/KEEP/_Odin/SMU_2/0Courses/02_Doing Data Science/_Case Study 1/Breweries.csv&quot;, header= TRUE)
+
+
+#1 Breweries per State
+#First we attempted to group the amount 
+BrewsPerState &lt;- breweries %&gt;% group_by(State) %&gt;% count(State)
+#Colorado had the most breweries, followed by California, then Missouri
+#DC, ND, South Dakota, and West Virginia all have 1 brewery
+
+#1- Sorted by amount of breweries
+BrewsPerState %&gt;% ggplot(aes(x=reorder(State, -n),y=n)) + geom_bar(stat = &quot;identity&quot;) +
+  ggtitle( &quot;Number of Breweries per State&quot;) + xlab(&quot;State&quot;) + ylab(&quot;Number of Breweries&quot;) +
+  geom_text(aes(label = signif(n, digits = 2)), nudge_y = 2)  + theme_solarized()
+
+#2 Merge Data, merging on Brew_ID, we had to change the excel file to Brew_ID on one CSV
+
+mergeDF = inner_join(beers,breweries, by = (&quot;Brew_ID&quot;))
+head(mergeDF)
+mergeDF &lt;- dplyr::rename(mergeDF,BreweryName = Name.y)
+mergeDF &lt;- dplyr::rename(mergeDF,NameofBeer = Name.x)
+
+#3 Drop all na values from merged dataset
+mergeDF &lt;- na.omit(mergeDF)
+head(mergeDF)
+
+#4 plot median abv and ibu with bar plot
+#make two DF&#39;s
+mergeDFABV &lt;- mergeDF
+mergeDFIBU &lt;- mergeDF
+
+#Calculate Median ABV
+median(mergeDFABV$ABV, na.rm = TRUE)
+MedianABV &lt;- aggregate(ABV~State,mergeDFABV, FUN = median)
+#Plot Median ABV
+MedianABV %&gt;% ggplot(aes(x = State, y = ABV)) + geom_bar(stat = &quot;identity&quot;) + ggtitle(&quot;Median ABV by State&quot;) + xlab(&quot;State&quot;) + ylab(&quot;Median ABV&quot;)
+
+#Calculate Median IBU
+median(mergeDFIBU$IBU, na.rm = TRUE)
+MedianIBU &lt;- aggregate(IBU~State,mergeDFIBU, FUN = median)
+#Plot Median IBU
+MedianIBU %&gt;% ggplot(aes(x = State, y = IBU)) + geom_bar(stat = &quot;identity&quot;) + ggtitle(&quot;Median IBU by State&quot;) + xlab(&quot;State&quot;) + ylab(&quot;Median IBU&quot;)
+
+
+#5 Find the Max ABV and IBU
+
+#Calculate Max ABV
+max(merge(mergeDFABV$ABV, na.rm = TRUE))
+max &lt;- aggregate(ABV~State,mergeDFABV, FUN = max)
+
+#Plot Max ABV
+max_ABV %&gt;% ggplot(aes(x = State, y = IBU)) + geom_bar(stat = &quot;identity&quot;) + ggtitle(&quot;Max IBU by State&quot;) + xlab(&quot;State&quot;) + ylab(&quot;Max ABV&quot;) + geom_text(aes(label = signif(IBU, digits = 3)), nudge_y = 5) + theme_solarized()
+
+#Caclulate Max IBU
+max(mergeDFIBU$IBU, na.rm = TRUE)
+maxIBU &lt;- aggregate(IBU~State,mergeDFIBU, FUN = max)
+#Plot Max IBU
+maxIBU$ABV %&gt;% ggplot(aes(x = reorder(State, -IBU), y = IBU)) + geom_bar(stat = &quot;identity&quot;) + ggtitle(&quot;Max IBU by State&quot;) + xlab(&quot;State&quot;) + ylab(&quot;Max IBU&quot;) + 
+  geom_text(aes(label = signif(ABV, digits = 2)), nudge_y = .003) + theme_solarized()
+
+#6 Summary of ABV 
+summary(mergeDFABV$ABV)
+boxplot(mergeDFABV$ABV, xlab = &quot;ABV Count From All the States&quot;, main =&quot;Boxplot of ABV Data Summary&quot;, horizontal=TRUE, col=&#39;darkred&#39;)
+#the average ABV is between 5.9% and 6% 
+
+#7 Relationship between bitterness and ABV
+#By state, not used
+mergeDF %&gt;% ggplot(aes(x = ABV, y = IBU)) + geom_point() + geom_smooth(method = &quot;loess&quot;) + facet_wrap(~State)
+#line of best fit
+mergeDF %&gt;% ggplot(mapping = aes(IBU,ABV), fill = &quot;Style&quot;) + geom_point() + geom_smooth(method = &quot;gam&quot;) + theme_solarized()
+
+
+#8 KNN
+
+#get IPA and Ale strings
+NameGame &lt;- filter(mergeDF, grepl(&#39;IPA|Ale&#39;, Style))
+
+testname &lt;- NameGame
+
+
+#KNN
+knn(NameGame[,3:4],testname, NameGame$Style, prob = TRUE, k = 5)
+IPA_Ale = filter(mergeDF, grepl(&#39;IPA|Ale&#39;, Style))
+#  only IPA, Ale, Style
+IPA_Ale = select(IPA_Ale,ABV,IBU,Style)
+set.seed(20)
+splitPerc = 0.7
+trainIndices = sample(1:dim(IPA_Ale)[1], round(splitPerc * dim(IPA_Ale)[1]))
+train = IPA_Ale[splitPerc,]
+test = IPA_Ale[-splitPerc,]
+classifications = knn(train[,c(1:2)], test[,c(1:2)], train$Style, prob = TRUE, k = 10)
+table(classifications, test$Style)
+#set up confusion matrix
+CM = confusionMatrix(table(classifications, test$Style))
+CM
+
+#9 Set up an EDA
+mergeDF %&gt;% ggplot(aes(x = State, y = ABV)) + geom_count(show.legend = FALSE) + theme_solarized()</code></pre>
+</body>
+</html>
